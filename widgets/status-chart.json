@@ -1,0 +1,1 @@
+[{"uid":"92be2d986a83c6c2","name":"Open the URL and and Enter Credentials","time":{"start":1744869903537,"stop":1744869905573,"duration":2036},"status":"passed","severity":"normal"},{"uid":"893f17f2d77b9144","name":"Successfully add a new employee after login","time":{"start":1744869875865,"stop":1744869903536,"duration":27671},"status":"failed","severity":"normal"}]
