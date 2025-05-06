@@ -86,7 +86,7 @@ jobs:
 
   comment-pr:
     needs: deploy
-    if: github.event_name == 'pull_request' && github.base_ref == 'master'
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - name: Comment PR with Allure Report URL
