@@ -86,9 +86,8 @@ jobs:
 
   comment-pr:
     needs: deploy
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
-    name: Comment PR with Allure Report URL
     steps:
       - name: Comment PR with Allure Report URL
         uses: actions/github-script@v7
@@ -97,7 +96,7 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const allureURL = "https://diwakarrana1.github.io/BehaveFramework/";
-            const body = `✅ Allure Report is available here: [Allure Report](${allureURL})`;
+            const body = ✅ Allure Report is available here: [Allure Report](${allureURL});
             github.rest.issues.createComment({
               issue_number: pr.number,
               owner: context.repo.owner,
