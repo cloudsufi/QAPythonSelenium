@@ -30,8 +30,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip3 install -r requirements.txt
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Cache Allure binary
         id: cache-allure
@@ -47,10 +49,13 @@ jobs:
           mv /opt/allure-2.24.1 /opt/allure
 
       - name: Run Behave Tests
-        run: behave --no-capture --no-capture-stderr --format allure_behave.formatter:AllureFormatter --outfile=allure-results
+        run: |
+          source venv/bin/activate
+          behave --no-capture --no-capture-stderr --format allure_behave.formatter:AllureFormatter --outfile=allure-results
 
       - name: Generate Allure Report
         run: |
+          source venv/bin/activate
           if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
             /opt/allure/bin/allure generate allure-results --clean -o allure-report
           else
@@ -96,7 +101,7 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const allureURL = "https://diwakarrana1.github.io/BehaveFramework/";
-            const body = ✅ Allure Report is available here: [Allure Report](${allureURL});
+            const body = `✅ Allure Report is available here: [Allure Report](${allureURL})`;
             github.rest.issues.createComment({
               issue_number: pr.number,
               owner: context.repo.owner,
