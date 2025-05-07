@@ -28,12 +28,10 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: ${{ runner.os }}-pip-
 
-      - name: Set up Python virtual environment and install dependencies
+      - name: Install dependencies
         run: |
-          python3 -m venv .venv
-          source .venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
 
       - name: Cache Allure binary
         id: cache-allure
@@ -49,9 +47,7 @@ jobs:
           mv /opt/allure-2.24.1 /opt/allure
 
       - name: Run Behave Tests
-        run: |
-          source .venv/bin/activate
-          behave --no-capture --no-capture-stderr --format allure_behave.formatter:AllureFormatter --outfile=allure-results
+        run: behave --no-capture --no-capture-stderr --format allure_behave.formatter:AllureFormatter --outfile=allure-results
 
       - name: Generate Allure Report
         run: |
@@ -90,8 +86,9 @@ jobs:
 
   comment-pr:
     needs: deploy
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    name: Comment PR with Allure Report URL
     steps:
       - name: Comment PR with Allure Report URL
         uses: actions/github-script@v7
