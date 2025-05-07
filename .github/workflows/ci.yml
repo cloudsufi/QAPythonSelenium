@@ -30,23 +30,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements.txt
 
       - name: Cache Allure binary
         id: cache-allure
         uses: actions/cache@v3
         with:
-          path: /opt/allure
+          path: $HOME/allure
           key: allure-${{ runner.os }}-2.24.1
 
       - name: Install Allure if not cached
         if: steps.cache-allure.outputs.cache-hit != 'true'
         run: |
-          curl -L https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz | tar -xz -C /opt/
-          mv /opt/allure-2.24.1 /opt/allure
+          curl -L https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz | tar -xz -C $HOME/
+          mv $HOME/allure-2.24.1 $HOME/allure
 
       - name: Run Behave Tests
         run: |
@@ -57,7 +55,7 @@ jobs:
         run: |
           source venv/bin/activate
           if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
-            /opt/allure/bin/allure generate allure-results --clean -o allure-report
+            $HOME/allure/bin/allure generate allure-results --clean -o allure-report
           else
             mkdir -p allure-report && echo "<html><body><h1>No test results found</h1></body></html>" > allure-report/index.html
           fi
