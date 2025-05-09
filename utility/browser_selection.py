@@ -26,7 +26,7 @@ def get_driver(browser_name):
         options.add_argument("--headless=new")  # Uncomment for headless CI/CD
 
         driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()),
+            service=ChromeService(ChromeDriverManager(version="136.0.7103.92").install()),
             options=options
         )
         driver.maximize_window()
